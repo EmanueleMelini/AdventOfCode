@@ -1,12 +1,21 @@
 matrix = []
-CHARS = ["#", "+", "$", "*", "-", "@"]
+CHARS = ["#", "+", "$", "*", "-", "@", "=", "/", "&", "%", "!", "£", "(", ")", "?", "^", "[", "]"]
 coords_found = []
+all_numbers = []
+
+MAX_X = 140
+MAX_Y = 140
+file = "input.txt"
+
+#MAX_X = 10
+#MAX_Y = 10
+#file = "input_2.txt"
 
 
 def get_number(x: int, y: int):
     number = matrix[y][x]
     if not number.isdigit():
-        return -1
+        return
     i = x - 1
     while i >= 0:
         n = matrix[y][i]
@@ -26,7 +35,7 @@ def get_number(x: int, y: int):
     if keep:
         coords_found.append(coords)
         i = x + 1
-        while i < 140:
+        while i < MAX_X:
             n = matrix[y][i]
             if n.isdigit():
                 number = number + n
@@ -34,14 +43,14 @@ def get_number(x: int, y: int):
             else:
                 break
                 #i = 140
-        return int(number)
-    else:
-        return -1
+        all_numbers.append(int(number))
+
+    return
 
 
 def try_adjacent(x: int, y: int):
-    numbers = []
     yy = y - 1
+    #print("Trying " + str(x) + ", " + str(y))
     #print("Base x:" + str(x))
     #print("Base y:" + str(y))
     #print("Start x:" + str(x - 1))
@@ -50,21 +59,13 @@ def try_adjacent(x: int, y: int):
         if 0 <= yy < 140:
             xx = x - 1
             while xx <= x + 1:
-                #print("Trying " + str(xx) + ", " + str(yy))
                 if 0 <= xx < 140:
-                    n_found = get_number(xx, yy)
-                    if n_found > 0:
-                        try:
-                            found = numbers.index(n_found)
-                        except ValueError:
-                            pass
-                        numbers.append(n_found)
+                    get_number(xx, yy)
                 xx += 1
         yy += 1
-    return numbers
 
 
-with (open('input.txt')) as f:
+with (open(file)) as f:
     lines = f.readlines()
 
     for line in lines:
@@ -75,23 +76,24 @@ with (open('input.txt')) as f:
         matrix.append(arr)
 
     tot = 0
-    all_numbers = []
+    #all_numbers = []
     y = 0
-    while y < 140:
+    while y < MAX_Y:
         x = 0
-        while x < 140:
+        while x < MAX_X:
             char = matrix[y][x]
             try:
                 i = CHARS.index(char)
-                try_numbers = try_adjacent(x, y)
-                all_numbers += try_numbers
-                for n in try_numbers:
-                    tot += n
+                try_adjacent(x, y)
             except ValueError:
                 pass
             x += 1
         y += 1
 
-    print(all_numbers)
-    print(coords_found)
+    tot = 0
+    for n in all_numbers:
+        tot += n
+
+    #print(all_numbers)
+    #print(coords_found)
     print(tot)
