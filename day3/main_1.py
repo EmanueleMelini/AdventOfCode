@@ -7,10 +7,6 @@ MAX_X = 140
 MAX_Y = 140
 file = "input.txt"
 
-#MAX_X = 10
-#MAX_Y = 10
-#file = "input_2.txt"
-
 
 def get_number(x: int, y: int):
     number = matrix[y][x]
@@ -50,11 +46,6 @@ def get_number(x: int, y: int):
 
 def try_adjacent(x: int, y: int):
     yy = y - 1
-    #print("Trying " + str(x) + ", " + str(y))
-    #print("Base x:" + str(x))
-    #print("Base y:" + str(y))
-    #print("Start x:" + str(x - 1))
-    #print("Start y:" + str(y - 1))
     while yy <= y + 1:
         if 0 <= yy < 140:
             xx = x - 1
@@ -75,8 +66,6 @@ with (open(file)) as f:
                 arr.append(c)
         matrix.append(arr)
 
-    tot = 0
-    #all_numbers = []
     y = 0
     while y < MAX_Y:
         x = 0
@@ -93,7 +82,4 @@ with (open(file)) as f:
     tot = 0
     for n in all_numbers:
         tot += n
-
-    #print(all_numbers)
-    #print(coords_found)
     print(tot)
